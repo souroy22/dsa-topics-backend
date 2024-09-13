@@ -44,6 +44,7 @@ const authControllers = {
           lastName: newUser.lastName,
           phone: newUser.phone,
           avatar: newUser.avatar,
+          role: newUser.role,
         },
         token,
       });
@@ -78,6 +79,7 @@ const authControllers = {
           lastName: user.lastName,
           phone: user.phone,
           avatar: user.avatar,
+          role: user.role,
         },
         token,
       });

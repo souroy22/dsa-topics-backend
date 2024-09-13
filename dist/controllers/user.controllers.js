@@ -27,6 +27,7 @@ const userControllers = {
                     lastName: user.lastName,
                     phone: user.phone,
                     avatar: user.avatar,
+                    role: user.role,
                 },
             });
         }
