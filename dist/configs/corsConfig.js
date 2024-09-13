@@ -1,7 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.corsOptions = exports.whitelist = void 0;
-exports.whitelist = ["http://localhost:5173"];
+exports.whitelist = [
+    "http://localhost:5173",
+    "https://prep-dsa-topics.netlify.app",
+];
 // Configure CORS options
 exports.corsOptions = {
     origin: function (origin, callback) {

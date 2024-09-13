@@ -8,7 +8,7 @@ const checkMissingFields_1 = __importDefault(require("../middlewares/checkMissin
 const auth_controllers_1 = __importDefault(require("../controllers/auth.controllers"));
 const validateEmailId_1 = __importDefault(require("../middlewares/validateEmailId"));
 const authRouter = express_1.default.Router();
-authRouter.post("/signup", checkMissingFields_1.default.signup, validateEmailId_1.default, auth_controllers_1.default.signup);
-authRouter.post("/signin", checkMissingFields_1.default.signin, auth_controllers_1.default.signin);
+authRouter.post("/signup", (0, checkMissingFields_1.default)("SIGNUP"), validateEmailId_1.default, auth_controllers_1.default.signup);
+authRouter.post("/signin", (0, checkMissingFields_1.default)("SIGN_IN"), auth_controllers_1.default.signin);
 exports.default = authRouter;
 //# sourceMappingURL=auth.routers.js.map

@@ -40,10 +40,41 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const UserSchema = new mongoose_1.Schema({
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
-    phone: { type: Number, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
+    phone: {
+        type: Number,
+        required: true,
+        unique: true,
+        match: [/^\d{10}$/, "Please fill a valid phone number"],
+        index: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        match: [/.+\@.+\..+/, "Please fill a valid email address"],
+        index: true,
+    },
     password: { type: String, required: true },
+    role: { type: String, enum: ["ADMIN", "USER"], default: "USER" },
     avatar: { type: String, default: null },
+    completedTopics: {
+        type: [
+            {
+                topicId: { type: mongoose_1.Types.ObjectId, ref: "Topic" },
+                completedAt: { type: Date, default: Date.now },
+            },
+        ],
+        default: [],
+    },
+    completedQuestions: {
+        type: [
+            {
+                questionId: { type: mongoose_1.Types.ObjectId, ref: "Question" },
+                completedAt: { type: Date, default: Date.now },
+            },
+        ],
+        default: [],
+    },
 });
 // hash password before save
 UserSchema.pre("save", function (next) {

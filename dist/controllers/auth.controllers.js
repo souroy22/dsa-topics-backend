@@ -19,7 +19,7 @@ const verifyPassword_1 = __importDefault(require("../utils/verifyPassword"));
 const authControllers = {
     signup: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { firstName, lastName, email, password, avatar = null, dob, phone, } = req.body;
+            const { firstName, lastName, email, password, avatar = null, phone, } = req.body;
             const isExist = yield (0, getUserByEmail_1.default)(email);
             if (isExist !== null) {
                 return res
@@ -33,7 +33,6 @@ const authControllers = {
                 password,
                 phone,
                 avatar,
-                dob,
             });
             yield newUser.save();
             const user = {
