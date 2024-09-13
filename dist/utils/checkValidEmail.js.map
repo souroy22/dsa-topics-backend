@@ -1,0 +1,1 @@
+{"version":3,"file":"checkValidEmail.js","sourceRoot":"","sources":["../../src/utils/checkValidEmail.ts"],"names":[],"mappings":";;AAAA,MAAM,kBAAkB,GAAG,CAAC,KAAa,EAAW,EAAE;IACpD,OAAO,CAAC,CAAC,MAAM,CAAC,KAAK,CAAC;SACnB,WAAW,EAAE;SACb,KAAK,CACJ,wJAAwJ,CACzJ,CAAC;AACN,CAAC,CAAC;AAEF,kBAAe,kBAAkB,CAAC"}
