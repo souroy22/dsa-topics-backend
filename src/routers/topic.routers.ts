@@ -22,12 +22,7 @@ topicRouter.get(
   topicControllers.getTopics
 );
 
-topicRouter.patch(
-  "/update/:slug",
-  verifyToken,
-  checkIsAdmin,
-  topicControllers.updateTopic
-);
+topicRouter.patch("/update/:slug", verifyToken, topicControllers.updateTopic);
 
 topicRouter.delete(
   "/delete/:slug",

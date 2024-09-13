@@ -28,7 +28,6 @@ questionRouter.get("/:slug", verifyToken, questionController.getAllQuestions);
 questionRouter.patch(
   "/update/:slug",
   verifyToken,
-  checkIsAdmin,
   questionController.updateQuestion
 );
 

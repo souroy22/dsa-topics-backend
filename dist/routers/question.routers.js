@@ -13,7 +13,7 @@ const questionRouter = express_1.default.Router();
 questionRouter.post("/create", verifyToken_1.default, (0, checkMissingFields_1.default)("CREATE_QUESTION"), checkIsAdmin_1.default, question_controllers_1.default.createQuestion);
 questionRouter.get("/all", verifyToken_1.default, pagination_1.paginateMiddleware, question_controllers_1.default.getAllQuestions);
 questionRouter.get("/:slug", verifyToken_1.default, question_controllers_1.default.getAllQuestions);
-questionRouter.patch("/update/:slug", verifyToken_1.default, checkIsAdmin_1.default, question_controllers_1.default.updateQuestion);
+questionRouter.patch("/update/:slug", verifyToken_1.default, question_controllers_1.default.updateQuestion);
 questionRouter.delete("/delete/:slug", verifyToken_1.default, checkIsAdmin_1.default, question_controllers_1.default.deleteQuestion);
 exports.default = questionRouter;
 //# sourceMappingURL=question.routers.js.map
