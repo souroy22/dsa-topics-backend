@@ -18,6 +18,7 @@ const pagination_1 = require("../utils/pagination");
 const slugify_1 = __importDefault(require("slugify"));
 const short_unique_id_1 = __importDefault(require("short-unique-id"));
 const getUserByEmail_1 = __importDefault(require("../utils/getUserByEmail"));
+const Question_model_1 = __importDefault(require("../models/Question.model"));
 const topicControllers = {
     getTopics: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
@@ -116,11 +117,13 @@ const topicControllers = {
             // Check if the topic is already completed by the user
             const topicIndex = user.completedTopics.findIndex((q) => q.topicId.toString() === updatedTopic._id.toString());
             let isCompleted = topicIndex !== -1;
+            const topicQuestions = yield Question_model_1.default.find({ topicId: updatedTopic._id });
             // Update completion status only if it's provided in the request
             if (completed !== undefined) {
                 if (completed === false && isCompleted) {
                     // Remove the topic from completed if marked as not completed
                     user.completedTopics.splice(topicIndex, 1);
+                    user.completedQuestions = user.completedQuestions.filter((q) => !topicQuestions.some((topicQ) => topicQ._id.toString() === q.questionId.toString()));
                     isCompleted = false;
                 }
                 else if (completed === true && !isCompleted) {
@@ -130,6 +133,14 @@ const topicControllers = {
                         completedAt: new Date(),
                     });
                     isCompleted = true;
+                    topicQuestions.forEach((question) => {
+                        if (!user.completedQuestions.some((q) => q.questionId.toString() === question._id.toString())) {
+                            user.completedQuestions.push({
+                                questionId: question._id,
+                                completedAt: new Date(),
+                            });
+                        }
+                    });
                 }
                 // Save the updated user document
                 yield user.save();

@@ -6,6 +6,7 @@ import slugify from "slugify";
 import ShortUniqueId from "short-unique-id";
 import { HydratedDocument, ObjectId } from "mongoose";
 import getUserData from "../utils/getUserByEmail";
+import Question from "../models/Question.model";
 
 const topicControllers = {
   getTopics: async (req: Request, res: Response) => {
@@ -110,12 +111,18 @@ const topicControllers = {
         (q) => q.topicId.toString() === updatedTopic._id.toString()
       );
       let isCompleted = topicIndex !== -1;
-
+      const topicQuestions = await Question.find({ topicId: updatedTopic._id });
       // Update completion status only if it's provided in the request
       if (completed !== undefined) {
         if (completed === false && isCompleted) {
           // Remove the topic from completed if marked as not completed
           user.completedTopics.splice(topicIndex, 1);
+          user.completedQuestions = user.completedQuestions.filter(
+            (q) =>
+              !topicQuestions.some(
+                (topicQ) => topicQ._id.toString() === q.questionId.toString()
+              )
+          );
           isCompleted = false;
         } else if (completed === true && !isCompleted) {
           // Add the topic to completed if marked as completed
@@ -124,6 +131,18 @@ const topicControllers = {
             completedAt: new Date(),
           });
           isCompleted = true;
+          topicQuestions.forEach((question) => {
+            if (
+              !user.completedQuestions.some(
+                (q) => q.questionId.toString() === question._id.toString()
+              )
+            ) {
+              user.completedQuestions.push({
+                questionId: question._id as ObjectId,
+                completedAt: new Date(),
+              });
+            }
+          });
         }
 
         // Save the updated user document
