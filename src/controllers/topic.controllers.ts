@@ -91,7 +91,14 @@ const topicControllers = {
   },
   updateTopic: async (req: Request, res: Response) => {
     try {
+      const user = await getUserData(req.user.user.email);
+      if (!user) {
+        return res.status(401).json({ error: "No user found!" });
+      }
       const { title, completed } = req.body;
+      if (title !== undefined && user.role !== "ADMIN") {
+        return res.status(403).json({ error: "Access denied!" });
+      }
       const { slug } = req.params;
       const updatedTopic = await Topic.findOneAndUpdate(
         { slug },
@@ -100,10 +107,6 @@ const topicControllers = {
       );
       if (!updatedTopic) {
         return res.status(404).json({ message: "Topic not found" });
-      }
-      const user = await getUserData(req.user.user.email);
-      if (!user) {
-        return res.status(401).json({ error: "No user found!" });
       }
 
       // Check if the topic is already completed by the user

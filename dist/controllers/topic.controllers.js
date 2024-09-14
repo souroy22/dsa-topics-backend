@@ -104,15 +104,18 @@ const topicControllers = {
     }),
     updateTopic: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            const user = yield (0, getUserByEmail_1.default)(req.user.user.email);
+            if (!user) {
+                return res.status(401).json({ error: "No user found!" });
+            }
             const { title, completed } = req.body;
+            if (title !== undefined && user.role !== "ADMIN") {
+                return res.status(403).json({ error: "Access denied!" });
+            }
             const { slug } = req.params;
             const updatedTopic = yield Topic_model_1.default.findOneAndUpdate({ slug }, { $set: { title } }, { new: true, runValidators: true });
             if (!updatedTopic) {
                 return res.status(404).json({ message: "Topic not found" });
-            }
-            const user = yield (0, getUserByEmail_1.default)(req.user.user.email);
-            if (!user) {
-                return res.status(401).json({ error: "No user found!" });
             }
             // Check if the topic is already completed by the user
             const topicIndex = user.completedTopics.findIndex((q) => q.topicId.toString() === updatedTopic._id.toString());
