@@ -257,7 +257,7 @@ const questionController = {
 
       // Save the updated user document
       await user.save();
-      return res.status(200).json({ msg: "Question deleted successfully" });
+      return res.status(200).json({ message: "Question deleted successfully" });
     } catch (error) {
       if (error instanceof Error) {
         console.log(`Error: ${error.message}`);
